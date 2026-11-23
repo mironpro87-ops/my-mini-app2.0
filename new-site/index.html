@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Подписка</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <button class="admin-button" id="admin-button" type="button" aria-pressed="false">Админ</button>
+
+  <main class="page">
+    <h1 class="title" id="site-title">Подписка</h1>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="promo-button" type="button">Ввести промокод</button>
+      <button class="btn btn-primary" id="pay-button" type="button">Оплатить подписку</button>
+      <button class="btn btn-primary" id="trial-button" type="button">Пробный режим</button>
+    </div>
+
+    <section class="admin-panel" id="admin-panel" aria-label="Меню администратора" hidden>
+      <div class="admin-panel__head">
+        <span class="admin-panel__badge">Режим администратора</span>
+      </div>
+      <p class="admin-panel__hint">
+        Меняйте заголовок, ссылку Telegram и промокоды. Настройки сохраняются в этом браузере,
+        а «Сбросить» возвращает их, пробный период и подписку к исходным значениям.
+      </p>
+
+      <label class="field">
+        <span class="field__label">Название сайта</span>
+        <input class="field__input" id="admin-title-input" type="text" />
+      </label>
+      <label class="field">
+        <span class="field__label">Ссылка Telegram</span>
+        <input class="field__input" id="admin-telegram-input" type="text" />
+      </label>
+      <label class="field">
+        <span class="field__label">Промокоды (через запятую)</span>
+        <input
+          class="field__input"
+          id="admin-codes-input"
+          type="text"
+          placeholder="PROMO2026, SALE10"
+        />
+      </label>
+
+      <div class="admin-panel__actions">
+        <button class="btn btn-secondary" id="admin-reset" type="button">Сбросить</button>
+        <button class="btn btn-primary" id="admin-save" type="button">Сохранить</button>
+      </div>
+    </section>
+
+    <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
+
+    <dialog class="dialog" id="promo-dialog" aria-labelledby="promo-title">
+      <h2 class="dialog__title" id="promo-title">Ввести промокод</h2>
+      <p class="dialog__text">Промокод активирует подписку на месяц и откроет карту.</p>
+      <form class="promo-form" id="promo-form" novalidate>
+        <label class="field">
+          <span class="field__label">Промокод</span>
+          <input
+            class="field__input"
+            id="promo-code"
+            name="promo"
+            type="text"
+            placeholder="Например, PROMO2026"
+            autocomplete="off"
+            spellcheck="false"
+            required
+          />
+        </label>
+        <p class="field__error" id="promo-error" hidden>Введите промокод</p>
+        <div class="dialog__actions">
+          <button class="btn btn-secondary close-dialog" type="button">Отмена</button>
+          <button class="btn btn-primary" type="submit">Применить</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="dialog" id="pay-dialog" aria-labelledby="pay-title">
+      <h2 class="dialog__title" id="pay-title">Оплата подписки</h2>
+      <p class="dialog__text">Вы точно хотите перейти в Telegram?</p>
+      <div class="dialog__actions">
+        <button class="btn btn-secondary close-dialog" type="button">Отмена</button>
+        <a
+          class="btn btn-primary"
+          id="telegram-link"
+          href="https://t.me/Dyrka6i7dyrdom"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Перейти</a>
+      </div>
+    </dialog>
+
+    <dialog class="dialog" id="trial-dialog" aria-labelledby="trial-dialog-title">
+      <h2 class="dialog__title" id="trial-dialog-title">Пробный режим</h2>
+      <p class="dialog__text">
+        Бесплатный доступ на 3 дня. По окончании пробного периода доступ к карте закроется.
+      </p>
+      <div class="dialog__actions">
+        <button class="btn btn-secondary close-dialog" type="button">Отмена</button>
+        <button class="btn btn-primary" id="trial-start" type="button">Начать пробный период</button>
+      </div>
+    </dialog>
+
+    <dialog class="dialog" id="access-expired-dialog" aria-labelledby="access-expired-title">
+      <h2 class="dialog__title" id="access-expired-title">Пробный период закончился</h2>
+      <p class="dialog__text" id="access-expired-text">
+        Бесплатный доступ на 3 дня завершён. Оформите подписку, чтобы снова открыть карту.
+      </p>
+      <div class="dialog__actions">
+        <button class="btn btn-secondary close-dialog" type="button">Закрыть</button>
+        <button class="btn btn-primary" id="trial-pay" type="button">Оплатить подписку</button>
+      </div>
+    </dialog>
+
+    <dialog class="dialog" id="admin-dialog" aria-labelledby="admin-dialog-title">
+      <h2 class="dialog__title" id="admin-dialog-title">Вход в режим администратора</h2>
+      <form class="promo-form" id="admin-form" novalidate>
+        <label class="field">
+          <span class="field__label">Пароль</span>
+          <input
+            class="field__input"
+            id="admin-password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+        <p class="field__error" id="admin-error" hidden>Неверный пароль</p>
+        <div class="dialog__actions">
+          <button class="btn btn-secondary close-dialog" type="button">Отмена</button>
+          <button class="btn btn-primary" type="submit">Войти</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
